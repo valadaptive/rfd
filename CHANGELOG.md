@@ -1,5 +1,8 @@
 # Change Log
 
+## Unreleased
+- Fix `AsyncFileDialog` blocking the executor on Windows (#191)
+
 ## 0.14.0
 - i18n for GTK and XDG Portal
 - Use XDG Portal as default
