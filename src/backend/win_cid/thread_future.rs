@@ -45,7 +45,13 @@ impl<R> std::future::Future for ThreadFuture<R> {
 
         match data {
             Ok(mut data) => {
-                Poll::Ready(data.take().unwrap())
+                match data.take() {
+                    Some(data) => Poll::Ready(data),
+                    None => {
+                        *state.waker.lock().unwrap() = Some(cx.waker().clone());
+                        Poll::Pending
+                    }
+                }
             }
             Err(TryLockError::Poisoned(err)) => {
                 panic!("{}", err);
